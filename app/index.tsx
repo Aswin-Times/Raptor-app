@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
-import { AlertCircle, ShieldAlert, Zap, MessageCircle, Phone, MapPin, ChevronRight, Navigation, Video } from 'lucide-react-native';
+import { AlertCircle, ShieldAlert, Zap, MessageCircle, Phone, MapPin, ChevronRight, Navigation, Video, Heart } from 'lucide-react-native';
 import { useState } from 'react';
 import { useOfflineLocation } from '../hooks/useOfflineLocation';
 import SosModal from '../components/SosModal';
@@ -49,6 +49,12 @@ export default function Home() {
       title: "Incident Recorder",
       desc: "Auto-capture photos, audio & GPS on SOS. AES-256 encrypted evidence for FIR filing.",
       link: "/incident-recorder",
+    },
+    {
+      icon: Heart,
+      title: "Medical ID",
+      desc: "Offline storage for allergies, blood type, and emergency contacts for first responders.",
+      link: "/medical-id",
     },
   ];
 
