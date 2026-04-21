@@ -38,6 +38,14 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      "expo-sqlite",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow RoadSOS to use your location for emergency dispatch.",
+          "locationWhenInUsePermission": "Allow RoadSOS to use your location for emergency dispatch."
+        }
       ]
     ],
     "experiments": {

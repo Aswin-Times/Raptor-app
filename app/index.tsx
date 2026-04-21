@@ -1,11 +1,15 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
-import { AlertCircle, ShieldAlert, Zap, MessageCircle, Phone, MapPin, ChevronRight } from 'lucide-react-native';
+import { AlertCircle, ShieldAlert, Zap, MessageCircle, Phone, MapPin, ChevronRight, Navigation } from 'lucide-react-native';
 import { useState } from 'react';
+import { useOfflineLocation } from '../hooks/useOfflineLocation';
+import SosModal from '../components/SosModal';
 
 export default function Home() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [showSosModal, setShowSosModal] = useState(false);
+  const { address } = useOfflineLocation();
 
   const handleGetHelpNow = async () => {
     // Navigate to emergency chat
@@ -13,7 +17,7 @@ export default function Home() {
   };
 
   const handleSos = () => {
-    handleGetHelpNow();
+    setShowSosModal(true);
   };
 
   const features = [
@@ -32,12 +36,13 @@ export default function Home() {
       icon: Phone,
       title: "Dispatch Coordination",
       desc: "Instant access to emergency services with location-based contact recommendations",
+      link: "/emergency-numbers",
     },
     {
       icon: MapPin,
       title: "Hospital Locator",
       desc: "Instantly locate the nearest hospitals and health centers based on your current location",
-      link: "https://www.google.com/maps/search/Nearest+Hospitals",
+      link: "/facilities",
     },
   ];
 
@@ -57,6 +62,11 @@ export default function Home() {
           <View style={styles.badge}>
             <Zap size={14} color="#e11d48" />
             <Text style={styles.badgeText}>Real-time Emergency Response</Text>
+          </View>
+
+          <View style={styles.locationBadge}>
+            <Navigation size={14} color="#3b82f6" />
+            <Text style={styles.locationText}>{address}</Text>
           </View>
 
           <Text style={styles.title}>
@@ -145,6 +155,7 @@ export default function Home() {
           <Text style={styles.footerSubtext}>Always call 112 in life-threatening emergencies</Text>
         </View>
       </ScrollView>
+      <SosModal visible={showSosModal} onClose={() => setShowSosModal(false)} />
     </SafeAreaView>
   );
 }
@@ -197,6 +208,23 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: '#e11d48',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  locationBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(59, 130, 246, 0.3)',
+    marginBottom: 24,
+  },
+  locationText: {
+    color: '#3b82f6',
     fontSize: 12,
     fontWeight: '600',
   },
