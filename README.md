@@ -9,22 +9,25 @@ RoadSOS is a production-ready React Native (Expo) mobile application designed to
    - Bundled with all Indian national emergency numbers (112, 108, 100) and state-specific contacts.
    - One-tap direct dial integration.
 
-2. **Pre-Seeded Hospital & Police Database (Offline Geohash)**
-   - Powered by `expo-sqlite` and pre-seeded with emergency facility data.
-   - Uses a pure JavaScript Haversine formula to instantly calculate precise distances to nearby trauma centers and police stations entirely offline.
+2. **Real-Time Offline Hospital & Police Locator**
+   - Powered by `expo-sqlite` and updated with live `expo-location` GPS tracking.
+   - Instantly calculates precise distances to nearby trauma centers and police stations entirely offline within a 20km radius.
+   - Includes fallback mechanisms for mock data if GPS is unavailable.
 
 3. **Offline GPS + Reverse Geocoding**
    - Uses `expo-location` with satellite GPS (no internet required).
-   - Bundled lightweight GeoJSON bounding box engine to resolve coordinates into human-readable State/District locations locally.
+   - Resolves coordinates into human-readable Indian State/District locations locally.
 
-4. **One-Tap SMS SOS**
+4. **Configurable One-Tap SMS SOS**
    - Bypasses data networks entirely by leveraging native SMS (`expo-sms`).
-   - Automatically pre-fills an emergency message with the user's name, accident type, local timestamp, and a Google Maps GPS link.
+   - Automatically pre-fills emergency messages with the user's name, accident type, and a live Google Maps GPS link.
+   - **Custom Contacts**: Students can now add personal emergency contacts (family, friends) that persist offline via `MMKV`.
+   - **Police Integration**: Standard emergency lines (112, 100) are permanently included and notified.
 
-5. **Bundled Offline First Aid Guide**
-   - Complete first-aid database secured in `expo-sqlite`.
-   - Uses SQLite FTS5 (Full-Text Search) for instantaneous, debounced searching.
-   - Interactive UI with category chips (Cardiac, Trauma, Airway, etc.) and numbered step-by-step guidance.
+5. **Animated Offline First Aid Guide**
+   - Complete first-aid database with visual iconography for each disorder.
+   - **Dynamic Animations**: Pulse/Heartbeat effects (via `react-native-reanimated`) provide intuitive guidance.
+   - Uses SQLite FTS5 for instantaneous, offline searching.
 
 6. **Offline Incident Recorder**
    - 120-second automated evidence capture sequence.

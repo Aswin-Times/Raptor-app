@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, Modal, TextInput,
   ActivityIndicator, SafeAreaView, Alert, ScrollView
 } from 'react-native';
 import { ShieldAlert, X, MessageCircle, Check, AlertTriangle } from 'lucide-react-native';
 import { sendSosSms, AccidentType } from '../utils/sosSms';
+import { storage } from '../hooks/useEmergencyNumbers';
 
 const ACCIDENT_TYPES: AccidentType[] = [
   'Road Accident',
@@ -15,7 +16,8 @@ const ACCIDENT_TYPES: AccidentType[] = [
 ];
 
 // Emergency contacts for SOS — user can configure these
-const DEFAULT_SOS_RECIPIENTS = ['112']; // Fallback; real usage would pull from user profile
+const DEFAULT_POLICE_CONTACTS = ['112', '100'];
+const CUSTOM_CONTACTS_KEY = 'road_sos_custom_contacts';
 
 type SosModalProps = {
   visible: boolean;
@@ -27,6 +29,29 @@ export default function SosModal({ visible, onClose }: SosModalProps) {
   const [selectedType, setSelectedType] = useState<AccidentType>('Road Accident');
   const [userName, setUserName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [customContacts, setCustomContacts] = useState<string[]>([]);
+  const [newContact, setNewContact] = useState('');
+
+  useEffect(() => {
+    try {
+      const stored = storage.getString(CUSTOM_CONTACTS_KEY);
+      if (stored) setCustomContacts(JSON.parse(stored));
+    } catch { }
+  }, []);
+
+  const addContact = () => {
+    if (!newContact.trim() || newContact.length < 3) return;
+    const updated = [...customContacts, newContact.trim()];
+    setCustomContacts(updated);
+    storage.set(CUSTOM_CONTACTS_KEY, JSON.stringify(updated));
+    setNewContact('');
+  };
+
+  const removeContact = (index: number) => {
+    const updated = customContacts.filter((_, i) => i !== index);
+    setCustomContacts(updated);
+    storage.set(CUSTOM_CONTACTS_KEY, JSON.stringify(updated));
+  };
 
   const handleSend = async () => {
     if (!userName.trim()) {
@@ -34,7 +59,8 @@ export default function SosModal({ visible, onClose }: SosModalProps) {
       return;
     }
     setStep('sending');
-    const result = await sendSosSms(DEFAULT_SOS_RECIPIENTS, userName, selectedType);
+    const recipients = [...DEFAULT_POLICE_CONTACTS, ...customContacts];
+    const result = await sendSosSms(recipients, userName, selectedType);
     if (result.success) {
       setStep('done');
     } else {
@@ -47,6 +73,7 @@ export default function SosModal({ visible, onClose }: SosModalProps) {
     setStep('select');
     setUserName('');
     setSelectedType('Road Accident');
+    setNewContact('');
     onClose();
   };
 
@@ -88,6 +115,32 @@ export default function SosModal({ visible, onClose }: SosModalProps) {
                     </Text>
                   </TouchableOpacity>
                 ))}
+              </View>
+
+              <Text style={styles.sectionLabel}>Emergency Contacts</Text>
+              <View style={styles.contactsBox}>
+                <Text style={styles.policeInfo}>👮 Police (112, 100) will be notified automatically.</Text>
+                {customContacts.map((c, i) => (
+                  <View key={i} style={styles.contactChip}>
+                    <Text style={styles.contactText}>{c}</Text>
+                    <TouchableOpacity onPress={() => removeContact(i)}>
+                      <X size={16} color="#ef4444" />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+                <View style={styles.addContactRow}>
+                  <TextInput
+                    style={styles.contactInput}
+                    placeholder="Add student/family number..."
+                    placeholderTextColor="#52525b"
+                    keyboardType="phone-pad"
+                    value={newContact}
+                    onChangeText={setNewContact}
+                  />
+                  <TouchableOpacity style={styles.addContactBtn} onPress={addContact}>
+                    <Text style={styles.addContactBtnText}>Add</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
 
               <View style={styles.previewBox}>
@@ -171,4 +224,12 @@ const styles = StyleSheet.create({
   stateSubText: { color: '#a1a1aa', fontSize: 14, textAlign: 'center', lineHeight: 22 },
   doneBtn: { backgroundColor: '#27272a', paddingHorizontal: 40, paddingVertical: 14, borderRadius: 12, marginTop: 10 },
   doneBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+  contactsBox: { backgroundColor: '#18181b', padding: 16, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
+  policeInfo: { color: '#fbbf24', fontSize: 13, marginBottom: 12, fontWeight: '600' },
+  contactChip: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#27272a', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8, marginBottom: 8 },
+  contactText: { color: '#fff', fontSize: 14, fontWeight: '500' },
+  addContactRow: { flexDirection: 'row', gap: 8, marginTop: 4 },
+  contactInput: { flex: 1, backgroundColor: '#27272a', color: '#fff', fontSize: 14, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8 },
+  addContactBtn: { backgroundColor: '#e11d48', paddingHorizontal: 16, justifyContent: 'center', borderRadius: 8 },
+  addContactBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 14 },
 });

@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   TextInput, SafeAreaView, ActivityIndicator
 } from 'react-native';
-import { Search, HeartPulse, Info, AlertTriangle, ChevronLeft, Zap } from 'lucide-react-native';
+import * as Icons from 'lucide-react-native';
+import { Search, Info, AlertTriangle, ChevronLeft, Zap } from 'lucide-react-native';
+import Animated, { withRepeat, withTiming, useSharedValue, useAnimatedStyle, withSequence, Easing } from 'react-native-reanimated';
 import { useFirstAidSearch, ParsedTopic } from '../hooks/useFirstAidSearch';
+
+const DynamicIcon = ({ name, color, size, style }: any) => {
+  const IconComponent = (Icons as any)[name] || Icons.HeartPulse;
+  return <IconComponent color={color} size={size} style={style} />;
+};
 
 const CATEGORIES = [
   { key: undefined,       label: 'All' },
@@ -97,7 +104,7 @@ export default function FirstAid() {
                   activeOpacity={0.7}
                 >
                   <View style={styles.topicCardInner}>
-                    <HeartPulse size={20} color="#e11d48" style={{ marginRight: 12 }} />
+                    <DynamicIcon name={topic.icon} size={20} color="#e11d48" style={{ marginRight: 12 }} />
                     <View style={{ flex: 1 }}>
                       <Text style={styles.topicTitle}>{topic.title}</Text>
                       <Text style={styles.topicDesc} numberOfLines={2}>
@@ -122,6 +129,23 @@ export default function FirstAid() {
 // ─── Detail View ─────────────────────────────────────────────────────────────
 
 function TopicDetail({ topic, onBack }: { topic: ParsedTopic; onBack: () => void }) {
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    scale.value = withRepeat(
+      withSequence(
+        withTiming(1.15, { duration: 800, easing: Easing.inOut(Easing.ease) }),
+        withTiming(1, { duration: 800, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      true
+    );
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.detailContainer}>
@@ -134,9 +158,9 @@ function TopicDetail({ topic, onBack }: { topic: ParsedTopic; onBack: () => void
 
         {/* Title */}
         <View style={styles.detailHeader}>
-          <View style={styles.detailIconWrap}>
-            <HeartPulse size={28} color="#e11d48" />
-          </View>
+          <Animated.View style={[styles.detailIconWrap, animatedStyle]}>
+             <DynamicIcon name={topic.icon} size={28} color="#e11d48" />
+          </Animated.View>
           <View style={{ flex: 1 }}>
             <Text style={styles.detailTitle}>{topic.title}</Text>
             <Text style={styles.detailCategory}>{topic.category.toUpperCase()}</Text>

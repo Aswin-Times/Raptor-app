@@ -4,6 +4,7 @@ export interface FirstAidTopic {
   shortDescription: string;
   instructions: string[];
   warnings: string[];
+  icon: string;
 }
 
 export const firstAidData: FirstAidTopic[] = [
@@ -11,6 +12,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "cpr",
     title: "CPR (Cardiopulmonary Resuscitation)",
     shortDescription: "For an adult who is unresponsive and not breathing normally.",
+    icon: "HeartPulse",
     instructions: [
       "Ensure the scene is safe. Tap the person's shoulder and shout, 'Are you okay?'",
       "If unresponsive and not breathing (or only gasping), call 911/112 immediately and get an AED if available.",
@@ -30,6 +32,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "choking",
     title: "Choking (Adult/Child)",
     shortDescription: "For someone whose airway is completely blocked and cannot cough, speak, or breathe.",
+    icon: "UserMinus",
     instructions: [
       "Ask 'Are you choking?' If they nod yes, tell them you are going to help.",
       "Call 911/112 immediately.",
@@ -47,6 +50,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "bleeding",
     title: "Severe Bleeding",
     shortDescription: "For heavy, continuous bleeding or blood that is spurting from a wound.",
+    icon: "Droplet",
     instructions: [
       "Ensure your safety. Put on medical gloves or use a physical barrier (like a plastic bag) if available.",
       "Call emergency services immediately for severe bleeding.",
@@ -65,6 +69,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "burns",
     title: "Burns (Thermal)",
     shortDescription: "For burns caused by heat, fire, hot objects, or hot liquids.",
+    icon: "Flame",
     instructions: [
       "Stop the burning process: Remove the person from the source of heat. If their clothing is on fire, have them 'Stop, Drop, and Roll'.",
       "Cool the burn: Run cool (not cold or freezing) water over the affected area for at least 10 to 20 minutes. If running water isn't available, use cool, wet compresses.",
@@ -82,6 +87,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "heart_attack",
     title: "Heart Attack",
     shortDescription: "When blood flow to a part of the heart is blocked.",
+    icon: "Activity",
     instructions: [
       "Call 911/112 immediately. Do not attempt to drive the person to the hospital yourself.",
       "Have the person sit down, rest, and try to stay calm. Loosen any tight clothing.",
@@ -99,6 +105,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "stroke",
     title: "Stroke",
     shortDescription: "When blood supply to part of the brain is interrupted.",
+    icon: "Brain",
     instructions: [
       "Think F.A.S.T. to check for signs of a stroke:",
       "FACE: Ask the person to smile. Does one side of the face droop?",
@@ -118,6 +125,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "seizure",
     title: "Seizure / Epilepsy",
     shortDescription: "A sudden, uncontrolled electrical disturbance in the brain.",
+    icon: "Zap",
     instructions: [
       "Stay calm and time the seizure.",
       "Protect the person from injury: Move hard or sharp objects away from them.",
@@ -137,6 +145,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "anaphylaxis",
     title: "Severe Allergic Reaction (Anaphylaxis)",
     shortDescription: "A severe, potentially life-threatening allergic reaction affecting the whole body.",
+    icon: "Syringe",
     instructions: [
       "Call 911/112 immediately.",
       "Ask if the person carries an epinephrine auto-injector (e.g., EpiPen). If they do, help them use it immediately. Usually, it is injected firmly into the outer mid-thigh and held for 3 to 10 seconds (follow the device instructions).",
@@ -154,6 +163,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "poisoning",
     title: "Poisoning",
     shortDescription: "For suspected swallowing, inhalation, or skin contact with toxic substances.",
+    icon: "Skull",
     instructions: [
       "Ensure the scene is safe (beware of toxic fumes or gases).",
       "Determine what was taken, how much, and exactly when.",
@@ -173,6 +183,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "fractures",
     title: "Fractures, Sprains & Dislocations",
     shortDescription: "For suspected broken bones, torn ligaments, or dislocated joints.",
+    icon: "Bone",
     instructions: [
       "Tell the person to keep still and avoid moving the injured area.",
       "Call 911/112 if the injury involves the head, neck, back, thigh, or pelvis, if the bone is piercing the skin, or if the limb is deformed, cold, or blue.",
@@ -190,6 +201,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "head_neck_spine",
     title: "Head, Neck, or Spinal Injuries",
     shortDescription: "For severe trauma to the head or back, often from falls or vehicle accidents.",
+    icon: "UserX",
     instructions: [
       "Call 911/112 immediately.",
       "Keep the person completely still. Instruct them not to move.",
@@ -207,6 +219,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "shock",
     title: "Shock",
     shortDescription: "A life-threatening condition where the body is not getting enough blood flow.",
+    icon: "ActivityPulse",
     instructions: [
       "Call emergency services immediately.",
       "Have the person lie down flat on their back.",
@@ -225,6 +238,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "heatstroke",
     title: "Heat Exhaustion & Heatstroke",
     shortDescription: "Severe heat-related illnesses from prolonged exposure to high temperatures.",
+    icon: "ThermometerSun",
     instructions: [
       "Move the person to a cooler place (shade or air-conditioned room) immediately.",
       "For Heat Exhaustion (heavy sweating, weakness, nausea): Have them lie down, loosen clothing, and apply cool, wet cloths to their body. Give small sips of cool water if they are fully awake.",
@@ -240,6 +254,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "hypothermia",
     title: "Hypothermia & Frostbite",
     shortDescription: "Life-threatening drop in body temperature and freezing of body tissues.",
+    icon: "ThermometerSnowflake",
     instructions: [
       "Move the person to a warm, dry place gently. Call 911/112 for severe cases.",
       "Remove any wet clothing carefully and replace it with dry, warm clothes or blankets.",
@@ -256,6 +271,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "animal_bites",
     title: "Animal & Snake Bites",
     shortDescription: "For bites from domestic/wild animals or venomous snakes.",
+    icon: "Bug",
     instructions: [
       "Ensure the scene is safe. Move away from the animal or snake.",
       "For Animal Bites: Wash the wound thoroughly with soap and warm water for at least 5 minutes. Apply an antibiotic ointment and cover with a clean bandage. Seek medical attention for all deep wounds or if the animal's rabies status is unknown.",
@@ -275,6 +291,7 @@ export const firstAidData: FirstAidTopic[] = [
     id: "electric_shock",
     title: "Electric Shock",
     shortDescription: "For injuries caused by contact with an electrical source or lightning.",
+    icon: "Zap",
     instructions: [
       "Ensure your own safety first. Do NOT touch the person if they are still in contact with the electrical current.",
       "Call 911/112 immediately.",
@@ -290,4 +307,4 @@ export const firstAidData: FirstAidTopic[] = [
       "High-voltage wires (like power lines) require specialized rescue teams. Stay at least 20 feet away and do not approach."
     ]
   }
-];
+];];

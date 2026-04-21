@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, Linking, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, Linking, ActivityIndicator, Alert } from 'react-native';
 import { MapPin, Phone, Hospital, ShieldAlert } from 'lucide-react-native';
+import * as Location from 'expo-location';
 import { getNearbyFacilities, seedFacilities, Facility } from '../data/db/sqlite';
 
 export default function FacilitiesScreen() {
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(true);
   const [type, setType] = useState<'all' | 'hospital' | 'police'>('all');
-
-  // Mock location (AIIMS New Delhi area)
-  const mockLat = 28.5659;
-  const mockLon = 77.2093;
+  const [locationError, setLocationError] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -18,12 +16,29 @@ export default function FacilitiesScreen() {
 
   const loadData = async () => {
     setLoading(true);
+    setLocationError(null);
     try {
       await seedFacilities();
-      const results = await getNearbyFacilities(mockLat, mockLon, 20, type === 'all' ? undefined : type);
+      
+      let lat = 28.5659; // Default fallback to AIIMS Delhi
+      let lon = 77.2093;
+
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setLocationError("GPS permission denied. Showing mock data (New Delhi).");
+      } else {
+        const location = await Location.getCurrentPositionAsync({});
+        lat = location.coords.latitude;
+        lon = location.coords.longitude;
+      }
+
+      const results = await getNearbyFacilities(lat, lon, 20, type === 'all' ? undefined : type);
       setFacilities(results);
     } catch (e) {
       console.error(e);
+      setLocationError("Failed to acquire GPS. Showing mock data (New Delhi).");
+      const results = await getNearbyFacilities(28.5659, 77.2093, 20, type === 'all' ? undefined : type);
+      setFacilities(results);
     } finally {
       setLoading(false);
     }
@@ -42,6 +57,12 @@ export default function FacilitiesScreen() {
       <View style={styles.container}>
         <Text style={styles.title}>Nearby Emergency Facilities</Text>
         <Text style={styles.subtitle}>Showing results within 20km (Offline GeoHash)</Text>
+
+        {locationError && (
+          <View style={styles.errorBanner}>
+            <Text style={styles.errorText}>{locationError}</Text>
+          </View>
+        )}
 
         <View style={styles.filterRow}>
           <TouchableOpacity 
@@ -133,5 +154,7 @@ const styles = StyleSheet.create({
   actionBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, backgroundColor: '#27272a', paddingVertical: 10, borderRadius: 8 },
   callBtn: { backgroundColor: '#e11d48' },
   actionBtnText: { color: '#fff', fontWeight: 'bold' },
-  emptyText: { color: '#a1a1aa', textAlign: 'center', marginTop: 40 }
+  emptyText: { color: '#a1a1aa', textAlign: 'center', marginTop: 40 },
+  errorBanner: { backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: 10, borderRadius: 8, marginBottom: 16, borderWidth: 1, borderColor: '#ef4444' },
+  errorText: { color: '#ef4444', fontSize: 13, textAlign: 'center', fontWeight: '600' }
 });
