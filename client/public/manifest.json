@@ -1,0 +1,18 @@
+{
+  "name": "RAPTOR AI Emergency Response",
+  "short_name": "RAPTOR AI",
+  "description": "AI-Powered Emergency Triage and Dispatch System",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#e11d48",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
