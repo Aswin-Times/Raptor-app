@@ -14,6 +14,7 @@ export default function RootLayout() {
         <Stack.Screen name="first-aid" options={{ headerShown: true, title: 'First Aid' }} />
         <Stack.Screen name="emergency-numbers" options={{ headerShown: true, title: 'Emergency Numbers', presentation: 'modal' }} />
         <Stack.Screen name="facilities" options={{ headerShown: true, title: 'Hospitals & Police' }} />
+        <Stack.Screen name="incident-recorder" options={{ headerShown: true, title: 'Incident Recorder' }} />
         <Stack.Screen name="emergency/[incidentId]" options={{ headerShown: true, title: 'Emergency Chat' }} />
       </Stack>
       <StatusBar style="auto" />

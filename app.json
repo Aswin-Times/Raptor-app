@@ -46,6 +46,21 @@
           "locationAlwaysAndWhenInUsePermission": "Allow RoadSOS to use your location for emergency dispatch.",
           "locationWhenInUsePermission": "Allow RoadSOS to use your location for emergency dispatch."
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow RoadSOS to access your camera to auto-capture incident evidence.",
+          "microphonePermission": "Allow RoadSOS to record audio as incident evidence."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow RoadSOS to save incident photos.",
+          "savePhotosPermission": "Allow RoadSOS to save incident photos.",
+          "isAccessMediaLocationEnabled": true
+        }
       ]
     ],
     "experiments": {

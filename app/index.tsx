@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
-import { AlertCircle, ShieldAlert, Zap, MessageCircle, Phone, MapPin, ChevronRight, Navigation } from 'lucide-react-native';
+import { AlertCircle, ShieldAlert, Zap, MessageCircle, Phone, MapPin, ChevronRight, Navigation, Video } from 'lucide-react-native';
 import { useState } from 'react';
 import { useOfflineLocation } from '../hooks/useOfflineLocation';
 import SosModal from '../components/SosModal';
@@ -43,6 +43,12 @@ export default function Home() {
       title: "Hospital Locator",
       desc: "Instantly locate the nearest hospitals and health centers based on your current location",
       link: "/facilities",
+    },
+    {
+      icon: Video,
+      title: "Incident Recorder",
+      desc: "Auto-capture photos, audio & GPS on SOS. AES-256 encrypted evidence for FIR filing.",
+      link: "/incident-recorder",
     },
   ];
 
